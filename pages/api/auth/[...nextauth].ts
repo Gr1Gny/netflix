@@ -1,10 +1,10 @@
-import NextAuth from "next-auth/next";
+import NextAuth, { AuthOptions } from 'next-auth';
 import Credentials from "next-auth/providers/credentials";
 import { compare } from 'bcrypt';
 
 import prismadb from '@/lib/prismadb';
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
     providers: [
         Credentials({
             id: 'credentials',
@@ -40,6 +40,8 @@ export default NextAuth({
                 if (!isCorrectPassword) {
                     throw new Error("Incorrect password");
                 }
+
+                return user;
             }
         })
     ],
@@ -51,7 +53,9 @@ export default NextAuth({
         strategy: 'jwt',
     },
     jwt: {
-        secret: process.env.NEXTAUT_JWT_SECRET,
+        secret: process.env.NEXTAUTH_JWT_SECRET,
     },
     secret: process.env.NEXTAUTH_SECRET,
-})
+};
+
+export default NextAuth(authOptions);
