@@ -7,6 +7,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import axios from 'axios';
 import { useCallback } from 'react';
+import { log } from "console";
 
 const Auth = () => {
   const router = useRouter();
@@ -29,10 +30,12 @@ const Auth = () => {
         redirect: false,
         callbackUrl: '/'
       });
+
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
-  }, [email, password]);
+  }, [email, password, router]);
 
   const register = useCallback(async () => {
     try {
@@ -41,10 +44,12 @@ const Auth = () => {
         name,
         password
       });
+
+      login();
     } catch (error) {
         console.log(error);
     }
-  }, [email, name, password]);
+  }, [email, name, password, login]);
 
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
